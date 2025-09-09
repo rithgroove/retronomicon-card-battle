@@ -8,10 +8,9 @@ ActionCard::ActionCard(const std::string& name,
                        const std::unordered_map<std::string, int>& cost,
                        int damage,
                        const std::string& effectScript)
-    : Card(name, image),
+    : Card(name, image,effectScript),
       cost(cost),
-      damage(damage),
-      effectScript(effectScript) {}
+      damage(damage){}
 
 void ActionCard::play() {
     std::cout << "Playing ActionCard: " << name
@@ -21,7 +20,7 @@ void ActionCard::play() {
         std::cout << amount << " " << type << " ";
     }
     std::cout << "\n";
-    std::cout << "  Effect Script: " << effectScript << "\n";
+    std::cout << "  Effect Script: " << m_effectScript << "\n";
     // TODO: hook into Lua scripting later
 }
 

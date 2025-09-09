@@ -24,14 +24,20 @@ bool CardDatabase::loadFromFile(const std::string& filePath) {
         std::string effectScript = cardJson.value("effectScript", "");
 
         if (type == "action") {
-            int cost = cardJson["cost"];
+            std::unordered_map<std::string, int> cost;
+            for (auto it = cardJson["cost"].begin(); it != cardJson["cost"].end(); ++it) {
+                cost[it.key()] = it.value().get<int>();
+            }
             int damage = cardJson["damage"];
-            registry[id] = std::make_unique<ActionCard>(name, image, cost, damage);
+            registry[id] = std::make_unique<ActionCard>(name, image, cost, damage, effectScript);
             // TODO: store effectScript link somewhere (later: Lua integration)
         }
         else if (type == "resource") {
-            int value = cardJson["value"];
-            registry[id] = std::make_unique<ResourceCard>(name, image, value);
+            std::unordered_map<std::string, int> value;
+            for (auto it = cardJson["value"].begin(); it != cardJson["value"].end(); ++it) {
+                value[it.key()] = it.value().get<int>();
+            }
+            registry[id] = std::make_unique<ResourceCard>(name, image, value,effectScript);
             // TODO: store effectScript link
         }
         else {
@@ -55,10 +61,10 @@ std::unique_ptr<Card> CardDatabase::createCard(const std::string& id) const {
 
     // Try dynamic_cast to check type
     if (auto ac = dynamic_cast<const ActionCard*>(proto)) {
-        return std::make_unique<ActionCard>(ac->getName(), ac->getImage(), ac->getCost(), ac->getDamage());
+        return std::make_unique<ActionCard>(ac->getName(), ac->getImage(), ac->getCost(), ac->getDamage(), ac->getEffectScript());
     }
     else if (auto rc = dynamic_cast<const ResourceCard*>(proto)) {
-        return std::make_unique<ResourceCard>(rc->getName(), rc->getImage(), rc->getValue());
+        return std::make_unique<ResourceCard>(rc->getName(), rc->getImage(), rc->getValue(), ac->getEffectScript());
     }
 
     return nullptr;

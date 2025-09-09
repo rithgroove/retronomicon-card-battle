@@ -2,21 +2,23 @@
 
 #include "card.h"
 #include <string>
+#include <unordered_map>
 
 namespace retronomicon::lib::cardBattle::data {
 
 class ResourceCard : public Card {
 private:
-    int value; // how much resource this card gives when used
+    std::unordered_map<std::string, int> value; // how much resource this card gives when used
 
 public:
     ResourceCard(const std::string& name,
                  const std::string& image,
-                 int value);
+                 const std::unordered_map<std::string, int>& value,
+                 const std::string& effectScript);
 
-    int getValue() const { return value; }
+    const std::unordered_map<std::string, int>& getValue() const { return value; }
 
     void play() override;
 };
 
-} // namespace retronomicon::lib::battle
+} // namespace retronomicon::lib::cardBattle::data
