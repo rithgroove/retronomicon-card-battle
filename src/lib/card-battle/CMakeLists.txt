@@ -11,7 +11,7 @@ target_include_directories(retronomicon-card-battle
         ${RETRO_INCLUDE_DIR}   # retronomicon's include directory
 )
 
-target_link_libraries(retronomicon-conversation
+target_link_libraries(retronomicon-card-battle
     PUBLIC
         retronomicon          # link the base engine
         nlohmann_json::nlohmann_json
