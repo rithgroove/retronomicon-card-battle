@@ -20,4 +20,8 @@ namespace retronomicon::lib::cardBattle::data {
       std::cout << "  Effect Script: " << m_effectScript << "\n";
       // TODO: hook into Lua scripting later
   }
+
+std::unique_ptr<Card> ResourceCard::clone() const {
+    return std::make_unique<ResourceCard>(*this);
+}
 } // namespace retronomicon::lib::battle

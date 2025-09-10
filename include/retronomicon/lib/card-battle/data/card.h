@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-
+#include <memory>
 namespace retronomicon::lib::cardBattle::data {
 
 class Card {
@@ -27,6 +27,9 @@ public:
 
     // Abstract behavior: each card must implement how it plays
     virtual void play() = 0;
+
+    // Needed for deck loading
+    virtual std::unique_ptr<Card> clone() const = 0;
 };
 
 } // namespace retronomicon::lib::battle

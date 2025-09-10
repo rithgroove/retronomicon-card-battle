@@ -19,6 +19,7 @@ public:
     const std::unordered_map<std::string, int>& getValue() const { return value; }
 
     void play() override;
+    std::unique_ptr<Card> clone() const override;
 };
 
 } // namespace retronomicon::lib::cardBattle::data

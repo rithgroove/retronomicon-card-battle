@@ -22,6 +22,8 @@ namespace retronomicon::lib::cardBattle::data {
         int getDamage() const { return damage; }
 
         void play() override;
+
+        std::unique_ptr<Card> clone() const override; 
     };
 
 } // namespace retronomicon::lib::cardBattle::data

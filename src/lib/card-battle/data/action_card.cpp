@@ -23,5 +23,7 @@ void ActionCard::play() {
     std::cout << "  Effect Script: " << m_effectScript << "\n";
     // TODO: hook into Lua scripting later
 }
-
+std::unique_ptr<Card> ActionCard::clone() const {
+    return std::make_unique<ActionCard>(*this);
+}
 } // namespace retronomicon::lib::cardBattle::data
