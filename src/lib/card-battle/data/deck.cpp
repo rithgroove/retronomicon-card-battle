@@ -1,7 +1,10 @@
 #include "retronomicon/lib/card-battle/data/deck.h"
 #include <chrono>
 #include <iostream>
+#include <fstream>
+#include <nlohmann/json.hpp>
 
+using json = nlohmann::json;
 
 namespace retronomicon::lib::cardBattle::data {
 
@@ -49,4 +52,38 @@ void Deck::reshuffleFromDiscard() {
     shuffle();
 }
 
-} // namespace retronomicon::lib::battle
+bool Deck::loadFromFile(const std::string& filename, const CardDatabase& cardDb) {
+    std::ifstream file(filename);
+    if (!file.is_open()) {
+        std::cerr << "Could not open deck file: " << filename << "\n";
+        return false;
+    }
+
+    json data;
+    file >> data;
+
+    if (!data.contains("deck") || !data["deck"].contains("cards")) {
+        std::cerr << "Invalid deck file format: " << filename << "\n";
+        return false;
+    }
+    for (const auto& cardEntry : data["deck"]["cards"]) {
+        std::string id = cardEntry["id"];
+        int count = cardEntry["count"];
+        if (!cardDb.hasCard(id)) {
+            for (int i = 0; i < count; ++i) {
+                addCard(cardDb.createCard(id)); 
+            }
+        }else{            
+            std::cerr << "Unknown card id in deck: " << id << "\n";
+            continue;
+        }
+
+    }
+
+
+    shuffle();
+    return true;
+}
+
+
+} // namespace retronomicon::lib::cardBattle::data

@@ -22,6 +22,8 @@ public:
 
     // Debug: list all cards
     void listCards() const;
+
+    bool hasCard(const std::string& id) const;   
 };
 
 } // namespace retronomicon::lib::battle

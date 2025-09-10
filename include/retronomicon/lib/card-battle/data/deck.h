@@ -4,7 +4,9 @@
 #include <memory>
 #include <random>
 #include <algorithm>
+#include <string>
 #include "card.h"
+#include "card_database.h"
 
 namespace retronomicon::lib::cardBattle::data {
 
@@ -32,9 +34,12 @@ public:
     // Reset deck from discard pile
     void reshuffleFromDiscard();
 
+    // Load deck from a JSON file (requires card database)
+    bool loadFromFile(const std::string& filename, const CardDatabase& cardDb);
+
     // Getters
     size_t size() const { return cards.size(); }
     size_t discardSize() const { return discardPile.size(); }
 };
 
-} // namespace retronomicon::lib::battle
+} // namespace retronomicon::lib::cardBattle::data

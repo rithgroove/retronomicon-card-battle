@@ -55,19 +55,7 @@ std::unique_ptr<Card> CardDatabase::createCard(const std::string& id) const {
         return nullptr;
     }
 
-    // Right now, naive clone (reconstruct from data).
-    // TODO: Proper deep copy / prototype pattern.
-    const Card* proto = it->second.get();
-
-    // Try dynamic_cast to check type
-    if (auto ac = dynamic_cast<const ActionCard*>(proto)) {
-        return std::make_unique<ActionCard>(ac->getName(), ac->getImage(), ac->getCost(), ac->getDamage(), ac->getEffectScript());
-    }
-    else if (auto rc = dynamic_cast<const ResourceCard*>(proto)) {
-        return std::make_unique<ResourceCard>(rc->getName(), rc->getImage(), rc->getValue(), ac->getEffectScript());
-    }
-
-    return nullptr;
+    return it->second->clone(); // ✅ cleaner
 }
 
 void CardDatabase::listCards() const {
@@ -76,5 +64,11 @@ void CardDatabase::listCards() const {
         std::cout << id << " -> " << card->getName() << "\n";
     }
 }
+
+
+bool CardDatabase::hasCard(const std::string& id) const {
+    return registry.find(id) != registry.end();
+}
+
 
 } // namespace retronomicon::lib::battle
