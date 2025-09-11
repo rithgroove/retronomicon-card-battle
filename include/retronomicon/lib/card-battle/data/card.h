@@ -12,12 +12,10 @@ namespace retronomicon::lib::cardBattle::data {
     using retronomicon::lib::asset::TextAsset;
 
     /**
-     * @brief Component responsible for managing animation clip states and playback.
+     * @brief A card entity
      */
     class Card {
-        public:
-
-            /***************************** Constructor *****************************/
+        public:c
 
             /**
              * @brief the constructor
@@ -29,7 +27,7 @@ namespace retronomicon::lib::cardBattle::data {
              */
             Card( const std::string& name, 
                   const std::unordered_map<std::string, int>& cost,
-                  std::shared_ptr<ImageAsset> std::string& image, 
+                  std::shared_ptr<ImageAsset> image, 
                   std::shared_ptr<TextAsset>  effectScript
                 )
                 : m_name(name), 
@@ -45,16 +43,46 @@ namespace retronomicon::lib::cardBattle::data {
 
             /***************************** Getter *****************************/
 
+            /**
+             * @brief get the name of this card
+             */
             const std::string& getName() const { return m_name; }
-            const std::string& getImage() const { return m_image; }
-            const std::string& getEffectScript() const { return m_effectScript; }
+
+            /**
+             * @brief get the image of this card
+             */
+            const std::shared_ptr<ImageAsset> getImage() const { return m_image; }
+
+            /**
+             * @brief get effect script of this card
+             */
+            const std::shared_ptr<TextAsset> getEffectScript() const { return m_effectScript; }
+
+            /**
+             * @brief get the cost of this card
+             */
             const std::unordered_map<std::string, int>& getCost() const { return m_cost; }
 
             /***************************** Setter *****************************/
 
+            /**
+             * @brief set the name of this card
+             */
             void setName(const std::string& newName) { m_name = newName; }
-            void setImage(const std::string& newImage) { m_image = newImage; }
-            void setEffectScript(const std::string& effectScript) { m_effectScript = effectScript; }
+
+            /**
+             * @brief set the image of this card
+             */
+            void setImage(std::shared_ptr<ImageAsset> newImage) { m_image = newImage; }
+
+            /**
+             * @brief set effect script of this card
+             */
+            void setEffectScript(std::shared_ptr<TextAsset> effectScript) { m_effectScript = effectScript; }
+
+            /**
+             * @brief set the cost of this card
+             */
             std::unordered_map<std::string, int> setCost(std::unordered_map<std::string, int>& cost) { m_cost = cost;}
 
             /***************************** Main Method *****************************/
