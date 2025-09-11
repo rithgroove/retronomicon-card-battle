@@ -4,7 +4,7 @@
 #include <unordered_map>
 #include <memory>
 #include "action_card.h"
-#include "resource_card.h"
+#include "reaction_card.h"
 
 namespace retronomicon::lib::cardBattle::data {
 class CardDatabase {

@@ -23,26 +23,26 @@ bool CardDatabase::loadFromFile(const std::string& filePath) {
         std::string image = cardJson["image"];
         std::string effectScript = cardJson.value("effectScript", "");
 
-        if (type == "action") {
-            std::unordered_map<std::string, int> cost;
-            for (auto it = cardJson["cost"].begin(); it != cardJson["cost"].end(); ++it) {
-                cost[it.key()] = it.value().get<int>();
-            }
-            int damage = cardJson["damage"];
-            registry[id] = std::make_unique<ActionCard>(name, image, cost, damage, effectScript);
-            // TODO: store effectScript link somewhere (later: Lua integration)
-        }
-        else if (type == "resource") {
-            std::unordered_map<std::string, int> value;
-            for (auto it = cardJson["value"].begin(); it != cardJson["value"].end(); ++it) {
-                value[it.key()] = it.value().get<int>();
-            }
-            registry[id] = std::make_unique<ResourceCard>(name, image, value,effectScript);
-            // TODO: store effectScript link
-        }
-        else {
+        // if (type == "action") {
+        //     std::unordered_map<std::string, int> cost;
+        //     for (auto it = cardJson["cost"].begin(); it != cardJson["cost"].end(); ++it) {
+        //         cost[it.key()] = it.value().get<int>();
+        //     }
+        //     int damage = cardJson["damage"];
+        //     registry[id] = std::make_unique<ActionCard>(name, image, cost, damage, effectScript);
+        //     // TODO: store effectScript link somewhere (later: Lua integration)
+        // }
+        // else if (type == "reaction") {
+        //     std::unordered_map<std::string, int> value;
+        //     for (auto it = cardJson["value"].begin(); it != cardJson["value"].end(); ++it) {
+        //         value[it.key()] = it.value().get<int>();
+        //     }
+        //     registry[id] = std::make_unique<ReactionCard>(name, image, value,effectScript);
+        //     // TODO: store effectScript link
+        // }
+        // else {
             std::cerr << "Unknown card type: " << type << "\n";
-        }
+        // }
     }
 
     return true;
@@ -55,7 +55,7 @@ std::unique_ptr<Card> CardDatabase::createCard(const std::string& id) const {
         return nullptr;
     }
 
-    return it->second->clone(); // ✅ cleaner
+    return it->second->clone(); 
 }
 
 void CardDatabase::listCards() const {

@@ -2,6 +2,7 @@
 
 #include <string>
 #include <memory>
+#include <unordered_map>
 #include "retronomicon/lib/asset/image_asset.h"
 #include "retronomicon/lib/asset/text_asset.h"
 /**
@@ -15,7 +16,7 @@ namespace retronomicon::lib::cardBattle::data {
      * @brief A card entity
      */
     class Card {
-        public:c
+        public:
 
             /**
              * @brief the constructor
@@ -46,44 +47,44 @@ namespace retronomicon::lib::cardBattle::data {
             /**
              * @brief get the name of this card
              */
-            const std::string& getName() const { return m_name; }
+            const std::string& getName() const noexcept { return m_name; }
 
             /**
              * @brief get the image of this card
              */
-            const std::shared_ptr<ImageAsset> getImage() const { return m_image; }
+            const std::shared_ptr<ImageAsset> getImage() const noexcept { return m_image; }
 
             /**
              * @brief get effect script of this card
              */
-            const std::shared_ptr<TextAsset> getEffectScript() const { return m_effectScript; }
+            const std::shared_ptr<TextAsset> getEffectScript() const noexcept { return m_effectScript; }
 
             /**
              * @brief get the cost of this card
              */
-            const std::unordered_map<std::string, int>& getCost() const { return m_cost; }
+            const std::unordered_map<std::string, int>& getCost() const noexcept { return m_cost; }
 
             /***************************** Setter *****************************/
 
             /**
              * @brief set the name of this card
              */
-            void setName(const std::string& newName) { m_name = newName; }
+            void setName(const std::string& newName) noexcept { m_name = newName; }
 
             /**
              * @brief set the image of this card
              */
-            void setImage(std::shared_ptr<ImageAsset> newImage) { m_image = newImage; }
+            void setImage(std::shared_ptr<ImageAsset> newImage) noexcept { m_image = newImage; }
 
             /**
              * @brief set effect script of this card
              */
-            void setEffectScript(std::shared_ptr<TextAsset> effectScript) { m_effectScript = effectScript; }
+            void setEffectScript(std::shared_ptr<TextAsset> effectScript) noexcept { m_effectScript = effectScript; }
 
             /**
              * @brief set the cost of this card
              */
-            std::unordered_map<std::string, int> setCost(std::unordered_map<std::string, int>& cost) { m_cost = cost;}
+            void setCost(std::unordered_map<std::string, int>& cost) noexcept { m_cost = cost;}
 
             /***************************** Main Method *****************************/
 
@@ -97,12 +98,27 @@ namespace retronomicon::lib::cardBattle::data {
              */
             virtual std::unique_ptr<Card> clone() const = 0;
 
+            /**
+             * @brief method to reset the card on the end of turn
+             */
+            void reset(){
+                m_active = true;
+            }
+
+            /**
+             * @brief method to deactivate the card effect (based on other card)
+             */
+            void negate(){
+                m_active = false;
+            }
+
         protected:
             /***************************** attribute *****************************/
             std::string m_name;
             std::shared_ptr<ImageAsset> m_image;
             std::shared_ptr<TextAsset>  m_effectScript;
             std::unordered_map<std::string, int> m_cost;
+            bool m_active = true;
     };
 
 } // namespace retronomicon::lib::battle
