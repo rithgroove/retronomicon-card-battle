@@ -6,20 +6,20 @@
 
 namespace retronomicon::lib::cardBattle::data {
 
-class ResourceCard : public Card {
-private:
-    std::unordered_map<std::string, int> value; // how much resource this card gives when used
+class ReactionCard : public Card {
+    private:
+        std::unordered_map<std::string, int> value; // how much resource this card gives when used
 
-public:
-    ResourceCard(const std::string& name,
-                 const std::string& image,
-                 const std::unordered_map<std::string, int>& value,
-                 const std::string& effectScript);
+    public:
+        ReactionCard(const std::string& name,
+                     const std::string& image,
+                     const std::unordered_map<std::string, int>& value,
+                     const std::string& effectScript);
 
-    const std::unordered_map<std::string, int>& getValue() const { return value; }
+        const std::unordered_map<std::string, int>& getValue() const { return value; }
 
-    void play() override;
-    std::unique_ptr<Card> clone() const override;
-};
+        void play() override;
+        std::unique_ptr<Card> clone() const override;
+    };
 
 } // namespace retronomicon::lib::cardBattle::data
