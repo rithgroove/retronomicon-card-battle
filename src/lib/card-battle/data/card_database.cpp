@@ -2,12 +2,16 @@
 #include <fstream>
 #include <iostream>
 #include <nlohmann/json.hpp> // JSON lib (https://github.com/nlohmann/json)
+#include "retronomicon/lib/asset/image_asset.h"
+#include "retronomicon/lib/asset/text_asset.h"
 
 using json = nlohmann::json;
 /**
  * @brief The namespace for card database
  */
 namespace retronomicon::lib::cardBattle::data {
+    using retronomicon::lib::asset::ImageAsset;
+    using retronomicon::lib::asset::TextAsset;
     /**
      * @brief method to load from filePath
      * 
@@ -33,32 +37,33 @@ namespace retronomicon::lib::cardBattle::data {
             std::string name = cardJson["name"];
             std::string image = cardJson["image"];
             std::string effectScript = cardJson.value("effectScript", "");
+            std::shared_ptr<ImageAsset> imageAsset = m_assetManager->loadImage(image,image);
+            std::shared_ptr<TextAsset> effectScriptAsset = m_assetManager->loadText(effectScript,effectScript);
 
             std::cout << "[Card - "<< cardJson["type"]<< "] " ;
             std::cout << cardJson["name"] << "\n" ; 
             std::cout << "- " << cardJson["image"] << "\n" ;   
             std::cout << "- " << cardJson["effectScript"] << "\n" ;
             std::cout << std::endl;   
-            // if (type == "action") {
-            //     std::unordered_map<std::string, int> cost;
-            //     for (auto it = cardJson["cost"].begin(); it != cardJson["cost"].end(); ++it) {
-            //         cost[it.key()] = it.value().get<int>();
-            //     }
-            //     int damage = cardJson["damage"];
-            //     registry[id] = std::make_unique<ActionCard>(name, image, cost, damage, effectScript);
-            //     // TODO: store effectScript link somewhere (later: Lua integration)
-            // }
-            // else if (type == "reaction") {
-            //     std::unordered_map<std::string, int> value;
-            //     for (auto it = cardJson["value"].begin(); it != cardJson["value"].end(); ++it) {
-            //         value[it.key()] = it.value().get<int>();
-            //     }
-            //     registry[id] = std::make_unique<ReactionCard>(name, image, value,effectScript);
-            //     // TODO: store effectScript link
-            // }
-            // else {
-                // std::cerr << "Unknown card type: " << type << "\n";
-            // }
+
+            std::unordered_map<std::string, int> cost;
+            for (auto it = cardJson["cost"].begin(); it != cardJson["cost"].end(); ++it) {
+                cost[it.key()] = it.value().get<int>();
+            }
+
+            if (type == "action") {
+                
+                int damage = cardJson["damage"];
+                registry[id] = std::make_unique<ActionCard>(name,cost, imageAsset, effectScriptAsset, damage);
+                // TODO: store effectScript link somewhere (later: Lua integration)
+            }
+            else if (type == "reaction") {
+                registry[id] = std::make_unique<ReactionCard>(name,cost, imageAsset, effectScriptAsset);
+                // TODO: store effectScript link
+            }
+            else {
+                std::cerr << "Unknown card type: " << type << "\n";
+            }
         }
 
         return true;
