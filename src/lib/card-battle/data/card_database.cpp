@@ -4,14 +4,24 @@
 #include <nlohmann/json.hpp> // JSON lib (https://github.com/nlohmann/json)
 
 using json = nlohmann::json;
-
+/**
+ * @brief The namespace for card database
+ */
 namespace retronomicon::lib::cardBattle::data {
-    
+    /**
+     * @brief method to load from filePath
+     * 
+     * @param filePath (theFilePath)
+     */
     bool CardDatabase::loadFromFile(const std::string& filePath) {
         std::ifstream file(filePath);
         if (!file.is_open()) {
             std::cerr << "Failed to open card JSON: " << filePath << "\n";
             return false;
+        }
+        if (!m_assetManager){
+            std::cerr << "[Card Database] asset manager not set \n";
+            return false;            
         }
 
         json data;
