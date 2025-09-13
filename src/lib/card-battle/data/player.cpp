@@ -12,7 +12,7 @@ namespace retronomicon::lib::cardBattle::data {
      * @param id the player id in string format
      */
     Player::Player(const std::string& id)
-        : m_fid(id) {}
+        : m_id(id) {}
 
     /***************************** Main Method *****************************/
 
