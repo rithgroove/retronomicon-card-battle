@@ -18,6 +18,7 @@ namespace retronomicon::lib::cardBattle::data {
     class Card {
         public:
 
+            /***************************** Constructor *****************************/
             /**
              * @brief the constructor
              * 
