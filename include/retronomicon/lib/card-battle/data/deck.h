@@ -37,9 +37,24 @@ public:
     // Load deck from a JSON file (requires card database)
     bool loadFromFile(const std::string& filename, const CardDatabase& cardDb);
 
-    // Getters
-    size_t size() const { return cards.size(); }
-    size_t discardSize() const { return discardPile.size(); }
+    // -------------------------
+    // Inline utility functions
+    // -------------------------
+
+    // Is the deck empty?
+    inline bool isEmpty() const noexcept { return cards.empty(); }
+
+    // Is the discard pile empty?
+    inline bool isDiscardEmpty() const noexcept { return discardPile.empty(); }
+
+    // How many cards in total (deck + discard)?
+    inline size_t totalSize() const noexcept { return cards.size() + discardPile.size(); }
+
+    // Just the deck size
+    inline size_t size() const noexcept { return cards.size(); }
+
+    // Just the discard pile size
+    inline size_t discardSize() const noexcept { return discardPile.size(); }
 };
 
 } // namespace retronomicon::lib::cardBattle::data
