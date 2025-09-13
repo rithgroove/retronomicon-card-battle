@@ -7,7 +7,6 @@
 using json = nlohmann::json;
 
 namespace retronomicon::lib::cardBattle::data {
-
 Deck::Deck() {
     auto seed = std::chrono::system_clock::now().time_since_epoch().count();
     rng.seed(static_cast<unsigned long>(seed));

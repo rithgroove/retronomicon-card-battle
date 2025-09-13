@@ -1,13 +1,13 @@
 #include "retronomicon/lib/card-battle/battle/battle_context.h"
 
-namespace retronomicon::lib::cardBattle::batle {
+namespace retronomicon::lib::cardBattle::battle {
 
     bool PlayerState::isAlive() const {
         return !deck->isEmpty() || !hand->isEmpty();
     }
 
-    BattleContext::BattleContext(std::unique_ptr<data::Deck> playerDeck,
-                                 std::unique_ptr<data::Deck> enemyDeck,
+    BattleContext::BattleContext(std::unique_ptr<Deck> playerDeck,
+                                 std::unique_ptr<Deck> enemyDeck,
                                  int handSize)
         : activePlayer(PlayerId::Player),
           battleOver(false),
@@ -16,7 +16,7 @@ namespace retronomicon::lib::cardBattle::batle {
         player = {
             PlayerId::Player,
             std::move(playerDeck),
-            std::make_unique<data::Hand>(),
+            std::make_unique<Hand>(),
             handSize,
             0,
             3 // default max energy
@@ -25,7 +25,7 @@ namespace retronomicon::lib::cardBattle::batle {
         enemy = {
             PlayerId::Enemy,
             std::move(enemyDeck),
-            std::make_unique<data::Hand>(),
+            std::make_unique<Hand>(),
             handSize,
             0,
             3

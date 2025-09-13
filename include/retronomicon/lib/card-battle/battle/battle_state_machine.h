@@ -1,8 +1,9 @@
 #pragma once
 
-#include "battle_context.h"
 
-namespace retronomicon::lib::cardBattle::batle {
+namespace retronomicon::lib::cardBattle::battle {
+
+    class BattleContext; // forward declaration
 
     enum class BattleState {
         StartOfBattle,
@@ -15,13 +16,13 @@ namespace retronomicon::lib::cardBattle::batle {
 
     class BattleStateMachine {
     private:
-        BattleContext& context;
+        BattleContext* context;
         BattleState currentState;
 
     public:
-        explicit BattleStateMachine(BattleContext& ctx);
+        explicit BattleStateMachine(BattleContext* ctx);
 
-        void update();   // advance one step
+        void update(float dt);   // advance one step
         void setState(BattleState newState);
         BattleState getState() const { return currentState; }
 

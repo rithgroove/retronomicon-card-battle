@@ -1,13 +1,14 @@
 #include "retronomicon/lib/card-battle/battle/battle_state_machine.h"
+#include "retronomicon/lib/card-battle/battle/battle_context.h" 
 #include <iostream>
 
-namespace retronomicon::lib::cardBattle::batle {
+namespace retronomicon::lib::cardBattle::battle {
 
-    BattleStateMachine::BattleStateMachine(BattleContext& ctx)
+    BattleStateMachine::BattleStateMachine(BattleContext* ctx)
         : context(ctx), currentState(BattleState::StartOfBattle) {}
 
-    void BattleStateMachine::update() {
-        if (context.isBattleOver()) {
+    void BattleStateMachine::update(float dt) {
+        if (context->isBattleOver()) {
             currentState = BattleState::BattleOver;
         }
 
@@ -29,7 +30,7 @@ namespace retronomicon::lib::cardBattle::batle {
                 break;
             case BattleState::BattleOver:
                 std::cout << "Battle Over! Winner: "
-                          << (context.getWinner() == PlayerId::Player ? "Player" : "Enemy")
+                          << (context->getWinner() == PlayerId::Player ? "Player" : "Enemy")
                           << std::endl;
                 break;
         }
@@ -49,7 +50,7 @@ namespace retronomicon::lib::cardBattle::batle {
     }
 
     void BattleStateMachine::handleStartOfTurn() {
-        auto& active = context.getActivePlayer();
+        auto& active = context->getActivePlayer();
 
         // Refill energy
         active.energy = active.maxEnergy;
@@ -64,7 +65,7 @@ namespace retronomicon::lib::cardBattle::batle {
     }
 
     void BattleStateMachine::handlePlayerAction() {
-        auto& active = context.getActivePlayer();
+        auto& active = context->getActivePlayer();
 
         std::cout << "Waiting for action from "
                   << (active.id == PlayerId::Player ? "Player" : "Enemy")
@@ -82,7 +83,7 @@ namespace retronomicon::lib::cardBattle::batle {
     }
 
     void BattleStateMachine::handleEndOfTurn() {
-        auto& active = context.getActivePlayer();
+        auto& active = context->getActivePlayer();
 
         // Draw until max hand size
         while (active.hand->size() < active.maxHandSize && !active.deck->isEmpty()) {
@@ -90,13 +91,13 @@ namespace retronomicon::lib::cardBattle::batle {
         }
 
         // Check win conditions
-        if (context.checkWinCondition()) {
+        if (context->checkWinCondition()) {
             currentState = BattleState::BattleOver;
             return;
         }
 
         // Swap to opponent
-        context.swapActivePlayer();
+        context->swapActivePlayer();
 
         setState(BattleState::StartOfTurn);
     }
