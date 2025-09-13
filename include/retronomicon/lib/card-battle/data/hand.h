@@ -20,10 +20,11 @@ public:
 
     // Play a card by index (removes from hand and returns it)
     std::unique_ptr<Card> playCard(size_t index);
+    bool discardCard(size_t index);
 
     // Discard all cards (return ownership)
     std::vector<std::unique_ptr<Card>> releaseAll();
-
+    std::vector<std::unique_ptr<Card>> releaseRandom(int amount);
     // Accessors
     size_t size() const { return cards.size(); }
     size_t getMaxSize() const { return maxSize; }

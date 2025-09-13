@@ -23,6 +23,7 @@ public:
     // Core actions
     void drawCards(int count);
     void discardHand();
+    void discardRandomCard(int amount);
 };
 
 } // namespace retronomicon::lib::battle
