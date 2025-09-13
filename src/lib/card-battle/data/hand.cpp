@@ -15,7 +15,7 @@ namespace retronomicon::lib::cardBattle::data {
      * @param maxSize the max hand size for this hand.
      */
     Hand::Hand(size_t maxSize)
-        : maxSize(maxSize) {}
+        : m_maxSize(maxSize) {}
 
     /***************************** Main Method *****************************/
 
@@ -32,7 +32,7 @@ namespace retronomicon::lib::cardBattle::data {
                       << card->getName() << "\n";
             return false;
         }
-        cards.push_back(std::move(card));
+        m_cards.push_back(std::move(card));
         return true;
     }
 
@@ -44,13 +44,13 @@ namespace retronomicon::lib::cardBattle::data {
      * @return boolean if the addition is success or not
      */
     std::unique_ptr<Card> Hand::playCard(size_t index) {
-        if (index >= cards.size()) {
+        if (index >= m_cards.size()) {
             std::cout << "Invalid card index\n";
             return nullptr;
         }
 
-        std::unique_ptr<Card> selected = std::move(cards[index]);
-        cards.erase(cards.begin() + index);
+        std::unique_ptr<Card> selected = std::move(m_cards[index]);
+        m_cards.erase(m_cards.begin() + index);
         return selected;
     }
 
@@ -62,12 +62,12 @@ namespace retronomicon::lib::cardBattle::data {
      * @return unique pointer to the card
      */
     bool Hand::discardCard(size_t index) {
-        if (index >= cards.size()) {
+        if (index >= m_cards.size()) {
             std::cout << "Invalid card index, cannot discard\n";
             return false;
         }
 
-        cards.erase(cards.begin() + index);
+        m_cards.erase(m_cards.begin() + index);
         return true;
     }
 
@@ -78,12 +78,12 @@ namespace retronomicon::lib::cardBattle::data {
      */
     std::vector<std::unique_ptr<Card>> Hand::discardAll() {
         std::vector<std::unique_ptr<Card>> released;
-        released.reserve(cards.size());
+        released.reserve(m_cards.size());
 
-        for (auto& card : cards) {
+        for (auto& card : m_cards) {
             released.push_back(std::move(card));
         }
-        cards.clear();
+        m_cards.clear();
 
         return released;
     }
@@ -98,15 +98,15 @@ namespace retronomicon::lib::cardBattle::data {
     std::vector<std::unique_ptr<Card>> Hand::discardRandom(int amount) {
         std::vector<std::unique_ptr<Card>> released;
 
-        if (cards.empty()) {
+        if (m_cards.empty()) {
             return released; // nothing to release
         }
 
         // Clamp amount so we don't overrun
-        size_t toRelease = std::min(static_cast<size_t>(amount), cards.size());
+        size_t toRelease = std::min(static_cast<size_t>(amount), m_cards.size());
 
         // Generate indices [0..cards.size()-1]
-        std::vector<size_t> indices(cards.size());
+        std::vector<size_t> indices(m_cards.size());
         std::iota(indices.begin(), indices.end(), 0);
 
         // Shuffle indices
@@ -120,8 +120,8 @@ namespace retronomicon::lib::cardBattle::data {
 
         // Move cards out
         for (size_t idx : chosen) {
-            released.push_back(std::move(cards[idx]));
-            cards.erase(cards.begin() + idx);
+            released.push_back(std::move(m_cards[idx]));
+            m_cards.erase(m_cards.begin() + idx);
         }
 
         return released;
@@ -135,10 +135,10 @@ namespace retronomicon::lib::cardBattle::data {
      * @return pointer to a card to peek.
      */  
     const Card* Hand::peek(size_t index) const {
-        if (index >= cards.size()) {
+        if (index >= m_cards.size()) {
             return nullptr;
         }
-        return cards[index].get();
+        return m_cards[index].get();
     }
 
 } // namespace retronomicon::lib::battle

@@ -10,7 +10,7 @@
 namespace retronomicon::lib::cardBattle::data {
 
     /**
-     * @brief A card representing player hand
+     * @brief A class representing player hand
      */
     class Hand {
 
